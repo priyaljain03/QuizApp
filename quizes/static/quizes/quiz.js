@@ -1,7 +1,7 @@
 console.log("Hello world quiz")
 const url = window.location.href
 console.log(url)
-
+console.log(document)
 const quizBox = document.getElementById('quiz-box')
 
 
@@ -36,3 +36,41 @@ $.ajax({
     }
 })
 
+
+const quizForm = document.getElementById('quiz-form')
+const csrf = document.getElementsByName('csrfmiddlewaretoken')
+
+
+const sendData = ()=>{
+    const elements = document.getElementsByClassName('ans')
+    const data={}
+    data['csrfmiddlewaretoken'] = csrf[0].value
+    Array.from(elements).forEach(ele=>{
+        if(ele.checked){
+            data[ele.name] = ele.value
+        }else{
+            if(!data[ele.name]){
+                data[ele.name] = null
+            }
+        }
+    })
+
+    $.ajax({
+        type: 'POST',
+        url: `${url}save/`,
+        data: data,
+        success: function(response){
+            console.log(response)
+        },
+        error: function(response){
+            console.log('error')
+        }
+
+    })
+}
+
+quizForm.addEventListener('submit',e=>{
+    e.preventDefault()
+
+    sendData()
+})
