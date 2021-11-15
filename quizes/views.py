@@ -66,7 +66,7 @@ def save_quiz_view(request,pk):
                             correct_answer = a.text
                 results.append({str(q):{'correct_answer':correct_answer,'answered':a_selected}})
             else:
-                results.append({str(q):"Not Answered"})
+                results.append({str(q):"not answered"})
         
         score_ = score * multiplier
         Result.objects.create(quiz=quiz,user=user,score=score_)
@@ -75,9 +75,3 @@ def save_quiz_view(request,pk):
             return JsonResponse({'passed': True,'score': score_,'results':results})
         else:
             return JsonResponse({'passed':False,'score': score_,'results':results})
-
-        
-
-
-    
-    return JsonResponse({'text':'works'})
